@@ -1,4 +1,5 @@
 # coding=utf-8
+import re
 import codecs
 import xlrd
 import sys
@@ -51,7 +52,7 @@ for sheet in wb.sheet_names():
 				if not rowvalues[colnum]:
 					sql = sql +"0,"
 				else:
-					sql = sql + str(int(rowvalues[colnum]))+","
+					sql = sql + re.sub('\.0$', '', str(float(rowvalues[colnum])))+","
 		sql = sql[:-1]
 		sql = sql + ");"
 		print sql+""
