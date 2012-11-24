@@ -28,7 +28,7 @@ for i in range(1 , len(sheets)):
 		colums = colums[0: colums.index('')]
 	except:
 		pass
-	colums_num = ord(max_col[i].lower())-96
+	colums_num = ord(max_col[i].strip()[0].lower())-96
 	#print "-- Start processing table "+sheet
 	#f.write("-- Start processing table "+sheet+"\n")
 	#print "DELETE FROM "+sheet
