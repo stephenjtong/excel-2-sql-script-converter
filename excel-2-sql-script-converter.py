@@ -28,7 +28,11 @@ for i in range(1 , len(sheets)):
 		colums = colums[0: colums.index('')]
 	except:
 		pass
-	colums_num = ord(max_col[i].strip()[0].lower())-96
+	#将A，B，AF，AE的列名换算成数字
+	colums_num = 0
+	tmp_len = len(max_col[i])
+	for j in range(tmp_len, 0, -1):
+		colums_num = colums_num + (ord(max_col[i][tmp_len - j].lower()) -96) * (26 ** (j-1))
 	#print "-- Start processing table "+sheet
 	#f.write("-- Start processing table "+sheet+"\n")
 	#print "DELETE FROM "+sheet
@@ -40,7 +44,7 @@ for i in range(1 , len(sheets)):
 		if not tmp: #删除空字段后整个数组为空, 此行为空
 			continue
 		sql = "insert into `"+sheet+"` ("
-		for col in colums:
+		for col in colums[:colums_num]:
 			sql = sql + "`"+col+"`,"
 		sql = sql[:-1]
 		sql = sql + ") values ("
