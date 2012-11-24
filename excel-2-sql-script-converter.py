@@ -15,17 +15,20 @@ f = codecs.open(outfile, 'w', 'utf-8')
 #print "set autocommit = 0;"
 f.write("set autocommit = 0;\n" )
 config_sh = wb.sheet_by_name(u'config')
-sheets = config_sh.col_values(0) #取出第一列
-for sheet in sheets:
-	if not sheet.startswith('tbl_'): #只写tbl_开头的
+sheets = config_sh.col_values(0) #第一列：excel sheet名
+tables = config_sh.col_values(1) #第二列：对应的table名
+max_col = config_sh.col_values(2) 
+for i in range(1 , len(sheets)):
+	sheet = tables[i]
+	if not sheets[i]:
 		continue
-	sh = wb.sheet_by_name(sheet)
+	sh = wb.sheet_by_name(sheets[i])
 	colums = sh.row_values(0)
 	try:
 		colums = colums[0: colums.index('')]
 	except:
 		pass
-	colums_num = len(colums)
+	colums_num = ord("A".lower())-96
 	#print "-- Start processing table "+sheet
 	#f.write("-- Start processing table "+sheet+"\n")
 	#print "DELETE FROM "+sheet
