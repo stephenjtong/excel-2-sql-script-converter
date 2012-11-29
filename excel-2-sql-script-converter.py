@@ -15,8 +15,8 @@ f = codecs.open(outfile, 'w', 'utf-8')
 print "set autocommit = 0;"
 f.write("set autocommit = 0;\n" )
 for sheet in wb.sheet_names():
-	if not sheet.startswith('tbl_'): #只写tbl_开头的
-		continue
+#	if not sheet.startswith('tbl_'): #只写tbl_开头的
+#		continue
 	sh = wb.sheet_by_name(sheet)
 	colums = sh.row_values(0)
 	try:
