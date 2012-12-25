@@ -3,6 +3,8 @@ import codecs
 import xlrd
 import sys
 import re
+from datetime import datetime
+
 if len(sys.argv)<2:
 	#print "please input xls file name"
 	exit()
@@ -13,6 +15,7 @@ except:
 wb = xlrd.open_workbook(sys.argv[1])
 f = codecs.open(outfile, 'w', 'utf-8')
 #print "set autocommit = 0;"
+f.write("-- Generated at: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S")+"\n\n");
 f.write("set autocommit = 0;\n" )
 config_sh = wb.sheet_by_name(u'config')
 sheets = config_sh.col_values(0) #第一列：excel sheet名
