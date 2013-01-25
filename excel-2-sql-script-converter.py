@@ -6,7 +6,7 @@ import re
 from datetime import datetime
 
 if len(sys.argv)<2:
-	#print "please input xls file name"
+	print "please input xls file name"
 	exit()
 try:
 	outfile = sys.argv[2]
@@ -14,7 +14,7 @@ except:
 	outfile = 'result.sql'
 wb = xlrd.open_workbook(sys.argv[1])
 f = codecs.open(outfile, 'w', 'utf-8')
-#print "set autocommit = 0;"
+print "set autocommit = 0;"
 f.write("-- Generated at: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S")+"\n\n");
 f.write("set autocommit = 0;\n" )
 config_sh = wb.sheet_by_name(u'config')
@@ -36,9 +36,9 @@ for i in range(1 , len(sheets)):
 	tmp_len = len(max_col[i])
 	for j in range(tmp_len, 0, -1):
 		colums_num = colums_num + (ord(max_col[i][tmp_len - j].lower()) -96) * (26 ** (j-1))
-	#print "-- Start processing table "+sheet
+	print "-- Start processing table "+sheet
 	#f.write("-- Start processing table "+sheet+"\n")
-	#print "DELETE FROM "+sheet
+	print "DELETE FROM "+sheet
 	f.write("delete from `"+sheet+"`;\n")
 	for rownum in range(1, sh.nrows):
 		rowvalues = sh.row_values(rownum)
@@ -59,7 +59,7 @@ for i in range(1 , len(sheets)):
 				if not rowvalues[colnum]:
 					sql = sql +"null,"
 				else:
-					sql = sql + "'" + (rowvalues[colnum]) + "',"
+					sql = sql + "'" + (re.sub(r'\'', '\\\'', rowvalues[colnum])) + "',"
 			else:
 				if not rowvalues[colnum]:
 					sql = sql +"'0',"
@@ -69,9 +69,9 @@ for i in range(1 , len(sheets)):
 					sql = sql + "'"+ tmp_value +"',"
 		sql = sql[:-1]
 		sql = sql + ");"
-		#print sql+""
+		print sql+""
 		f.write(sql+"\n");
-	#print "-- End of processing table "+sheet
+	print "-- End of processing table "+sheet
 	#f.write("-- End of processing table "+sheet+"\n")
-#print "commit;"
+print "commit;"
 f.write("commit;")
